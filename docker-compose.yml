@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  web:
+    image: nginx
+    ports:
+      - "80:8080"
+    volumes:
+      - type: bind
+        source: "./static.conf"
+        target: "/etc/nginx/conf.d/static.conf"
+      - "./public:/home/nginx/"
+
+      
