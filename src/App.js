@@ -3,7 +3,6 @@ import { saveCanvas, removeCanvas, startGame } from './canvas';
 
 export default function App() {
   const canvas = useRef(null);
-
   useEffect(() => {
     saveCanvas(canvas.current);
     startGame();

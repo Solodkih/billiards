@@ -1,7 +1,23 @@
-export function paintCircle(){
-    context.beginPath();
-    context.strokeStyle = 'red';
-    context.lineWidth = 5;
-    context.arc(250, 250, 25, -Math.PI, Math.PI);
-    context.stroke();
+export function paintCircle(context, x, y, rad, lineWidth, color) {
+  console.log(x, y, rad);
+  context.beginPath();
+  context.strokeStyle = color;
+  context.lineWidth = lineWidth;
+  context.arc(x, y, rad, -Math.PI, Math.PI);
+  context.stroke();
+}
+
+export function paintBorder(context, x, y, width, height, lineWidth, color) {
+  context.beginPath();
+  context.rect(x, y, width, height);
+  context.strokeStyle = color;
+  context.lineWidth = lineWidth;
+  context.stroke();
+}
+
+export function clear(context, canvas) {
+  context.beginPath();
+  context.rect(0, 0, canvas.width, canvas.height);
+  context.fillStyle = 'gray';
+  context.fill();
 }

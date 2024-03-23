@@ -1,33 +1,37 @@
+import { startAnimation, stopAnimation } from './animation';
+import { paintCircle, paintBorder, clear } from './paint';
+import { moveCircle } from './move';
+import { circle, border } from './data';
+import { calculatingСollisionСircleBorder } from './calculation';
+
 let canvas = null;
 let context = null;
 
 export function saveCanvas(can) {
   canvas = can;
   context = canvas.getContext('2d');
-
-  context.beginPath();
-  context.moveTo(0, 0);
-  context.lineTo(500, 0);
-  context.lineTo(500, 500);
-  context.lineTo(0, 500);
-  context.closePath();
-  context.strokeStyle = 'blue';
-  context.lineWidth = 10;
-  context.stroke();
-  console.log('Save', canvas);
 }
 
 export function removeCanvas() {
+  stopAnimation();
   canvas = null;
   context = null;
 }
 
 export function startGame() {
-  context.beginPath();
-  context.strokeStyle = 'red';
-  context.lineWidth = 5;
-  context.arc(250, 250, 25, -Math.PI, Math.PI);
-  context.stroke();
+  startAnimation(() => {
+    clear(context, canvas);
+    calculatingСollisionСircleBorder(circle, border);
+    paintBorder(
+      context,
+      border.x,
+      border.y,
+      border.width,
+      border.height,
+      border.lineWidth,
+      border.color
+    );
+    moveCircle(circle);
+    paintCircle(context, circle.x, circle.y, circle.r, 10, 'red');
+  });
 }
-
-

@@ -1,14 +1,16 @@
-let stopAnimation = false;
+let stop = false;
+
 export function stopAnimation() {
-  stopAnimation = true;
+  stop = true;
 }
 
 export function startAnimation(work) {
   requestAnimationFrame(tick);
-  stopAnimation = false;
+  stop = false;
 
-  function tick() {
-    if (stopAnimation) {
+  function tick(time) {
+    console.log("tick", time);
+    if (stop) {
       return;
     }
     requestAnimationFrame(tick);
