@@ -1,10 +1,20 @@
-export const circle = {
-  x: 50,
-  y: 50,
+export const circle1 = {
+  x: 200,
+  y: 200,
   r: 15,
   color: 'red',
-  projectionVectorX: 1,
+  projectionVectorX: 2,
   projectionVectorY: 2,
+};
+
+
+export const circle2 = {
+  x: 210,
+  y: 210,
+  r: 15,
+  color: 'grean',
+  projectionVectorX: -10,
+  projectionVectorY: 10,
 };
 
 export const border = {
