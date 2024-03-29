@@ -4,7 +4,7 @@ import { moveCircle } from './move';
 import { circle1, circle2, border } from './data';
 import {
   calculatingCollisionCircleBorder,
-  calculatingCollisionCircleCircle,
+  getProjectionsInNewCoordinates,
 } from './calculation';
 
 let canvas = null;
@@ -24,9 +24,6 @@ export function removeCanvas() {
 export function startGame() {
   startAnimation(() => {
     clear(context, canvas);
-    calculatingCollisionCircleBorder(circle1, border);
-    calculatingCollisionCircleBorder(circle2, border);
-    calculatingCollisionCircleCircle(circle1, circle2);
     paintBorder(
       context,
       border.x,
@@ -36,7 +33,11 @@ export function startGame() {
       border.lineWidth,
       border.color
     );
-    //moveCircle(circle);
+    calculatingCollisionCircleBorder(circle1, border);
+    calculatingCollisionCircleBorder(circle2, border);
+    getProjectionsInNewCoordinates(circle1, circle2);
+    moveCircle(circle1);
+    moveCircle(circle2);
     paintCircle(context, circle1.x, circle1.y, circle1.r, 10, circle1.color);
     paintCircle(context, circle2.x, circle2.y, circle2.r, 10, circle2.color);
   });

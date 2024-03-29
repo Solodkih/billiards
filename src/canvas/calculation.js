@@ -28,60 +28,130 @@ export function calculatingCollisionCircleBorder(circle, border) {
   }
 }
 
-export function calculatingCollisionCircleCircle(first, second) {
-  const newFirst = {};
-  const newSecond = {};
-
+export function getProjectionsInNewCoordinates(first, second) {
   const lengthBetweenCenter = Math.sqrt(
     (first.x - second.x) ** 2 + (first.y - second.y) ** 2
   );
+  console.log(lengthBetweenCenter, first.r + second.r);
 
-  console.log('lengthBetweenCenter', lengthBetweenCenter);
+  if (lengthBetweenCenter > first.r + second.r) return;
 
   const angleBetweenXandX1_YandY1 = Math.acos(
     Math.abs(first.y - second.y) / lengthBetweenCenter
-  );
-
-  console.log(
-    'angleBetweenXandX1_YandY1',
-    (angleBetweenXandX1_YandY1 * 180) / Math.PI,
-    Math.cos(angleBetweenXandX1_YandY1),
-    first.projectionVectorX,
-    first.projectionVectorY
   );
 
   const angleBetweenXandY1_YandX1 = Math.acos(
     Math.abs(first.x - second.x) / lengthBetweenCenter
   );
 
-  console.log(
-    'angleBetweenXandY1_YandX1',
-    (angleBetweenXandY1_YandX1 * 180) / Math.PI,
-    Math.cos(angleBetweenXandY1_YandX1)
+  const singXYtoX1Y1 = {
+    singProjectionXtoX1: first.y < second.y ? 1 : -1,
+    singProjectionYtoX1: first.x > second.x ? 1 : -1,
+    singProjectionXtoY1: first.x < second.x ? 1 : -1,
+    singProjectionYtoY1: first.y < second.y ? 1 : -1,
+  };
+
+  function getProjectionsX1Y1(
+    angleBetweenXandX1_YandY1,
+    angleBetweenXandY1_YandX1,
+    circle,
+    sing
+  ) {
+    let projectionXtoX1 =
+      Math.cos(angleBetweenXandX1_YandY1) *
+      circle.projectionVectorX *
+      sing.singProjectionXtoX1;
+
+    let projectionYtoX1 =
+      Math.cos(angleBetweenXandY1_YandX1) *
+      circle.projectionVectorY *
+      sing.singProjectionYtoX1;
+
+    let projectionX1 = projectionXtoX1 + projectionYtoX1;
+
+    let projectionYtoY1 =
+      Math.cos(angleBetweenXandX1_YandY1) *
+      circle.projectionVectorY *
+      sing.singProjectionYtoY1;
+
+    let projectionXtoY1 =
+      Math.cos(angleBetweenXandY1_YandX1) *
+      circle.projectionVectorX *
+      sing.singProjectionXtoY1;
+
+    let projectionY1 = projectionXtoY1 + projectionYtoY1;
+
+    return [projectionX1, projectionY1];
+  }
+
+  let [firstProjectionX1, firstProjectionY1] = getProjectionsX1Y1(
+    angleBetweenXandX1_YandY1,
+    angleBetweenXandY1_YandX1,
+    first,
+    singXYtoX1Y1
   );
 
-  let projectionVectorX1_1 =
-    Math.cos(angleBetweenXandX1_YandY1) * first.projectionVectorX;
-
-  let projectionVectorX1_2 =
-    Math.cos(angleBetweenXandY1_YandX1) * first.projectionVectorY;
-
-  let projectionVectorX = projectionVectorX1_1 + projectionVectorX1_2;
-
-  let projectionVectorY1_1 =
-    Math.cos(angleBetweenXandX1_YandY1) * first.projectionVectorY;
-  let projectionVectorY1_2 =
-    Math.cos(angleBetweenXandY1_YandX1) * first.projectionVectorX;
-
-  let projectionVectorY = projectionVectorY1_1 + projectionVectorY1_2;
-
-  console.log(
-    '123456789',
-    projectionVectorX,
-    projectionVectorX1_1,
-    projectionVectorX1_2,
-    projectionVectorY,
-    projectionVectorY1_1,
-    projectionVectorY1_2
+  let [secondProjectionX1, secondProjectionY1] = getProjectionsX1Y1(
+    angleBetweenXandX1_YandY1,
+    angleBetweenXandY1_YandX1,
+    second,
+    singXYtoX1Y1
   );
+
+  const singX1Y1toXY = {
+    singProjectionX1toX: first.y < second.y ? 1 : -1,
+    singProjectionY1toX: first.x < second.x ? 1 : -1,
+    singProjectionX1toY: first.x > second.x ? 1 : -1,
+    singProjectionY1toY: first.y < second.y ? 1 : -1,
+  };
+
+  function getProjectionsXY(
+    angleBetweenXandX1_YandY1,
+    angleBetweenXandY1_YandX1,
+    projectionX1,
+    projectionY1,
+    sing
+  ) {
+    let projectionX1toX =
+      Math.cos(angleBetweenXandX1_YandY1) * projectionX1 * sing.singProjectionX1toX;
+
+    let projectY1toX =
+      Math.cos(angleBetweenXandY1_YandX1) * projectionY1 * sing.singProjectionY1toX;
+
+    let projectionX = projectionX1toX + projectY1toX;
+
+    let projectY1toY =
+      Math.cos(angleBetweenXandX1_YandY1) * projectionY1 * sing.singProjectionY1toY;
+
+    let projectX1toY =
+      Math.cos(angleBetweenXandY1_YandX1) * projectionX1 * sing.singProjectionX1toY;
+
+    let projectionY = projectX1toY + projectY1toY;
+
+    return [projectionX, projectionY];
+  }
+
+  [firstProjectionY1, secondProjectionY1] = [secondProjectionY1, firstProjectionY1];
+
+  let [firstProjectionX, firstProjectionY] = getProjectionsXY(
+    angleBetweenXandX1_YandY1,
+    angleBetweenXandY1_YandX1,
+    firstProjectionX1,
+    firstProjectionY1,
+    singX1Y1toXY
+  );
+
+  let [secondProjectionX, secondProjectionY] = getProjectionsXY(
+    angleBetweenXandX1_YandY1,
+    angleBetweenXandY1_YandX1,
+    secondProjectionX1,
+    secondProjectionY1,
+    singX1Y1toXY
+  );
+
+  first.projectionVectorX = firstProjectionX;
+  first.projectionVectorY = firstProjectionY;
+
+  second.projectionVectorX = secondProjectionX;
+  second.projectionVectorY = secondProjectionY;
 }
