@@ -32,7 +32,6 @@ export function getProjectionsInNewCoordinates(first, second) {
   const lengthBetweenCenter = Math.sqrt(
     (first.x - second.x) ** 2 + (first.y - second.y) ** 2
   );
-  console.log(lengthBetweenCenter, first.r + second.r);
 
   if (lengthBetweenCenter > first.r + second.r) return;
 
@@ -131,13 +130,21 @@ export function getProjectionsInNewCoordinates(first, second) {
     return [projectionX, projectionY];
   }
 
-  [firstProjectionY1, secondProjectionY1] = [secondProjectionY1, firstProjectionY1];
+  let newFirstProjectionY1 =
+    ((first.weight - second.weight) * firstProjectionY1 +
+      2 * second.weight * secondProjectionY1) /
+    (first.weight + second.weight);
+
+  let newSecondProjectionY1 =
+    ((second.weight - first.weight) * secondProjectionY1 +
+      2 * first.weight * firstProjectionY1) /
+    (first.weight + second.weight);
 
   let [firstProjectionX, firstProjectionY] = getProjectionsXY(
     angleBetweenXandX1_YandY1,
     angleBetweenXandY1_YandX1,
     firstProjectionX1,
-    firstProjectionY1,
+    newFirstProjectionY1,
     singX1Y1toXY
   );
 
@@ -145,7 +152,7 @@ export function getProjectionsInNewCoordinates(first, second) {
     angleBetweenXandX1_YandY1,
     angleBetweenXandY1_YandX1,
     secondProjectionX1,
-    secondProjectionY1,
+    newSecondProjectionY1,
     singX1Y1toXY
   );
 

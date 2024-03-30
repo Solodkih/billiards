@@ -8,8 +8,7 @@ export function startAnimation(work) {
   requestAnimationFrame(tick);
   stop = false;
 
-  function tick(time) {
-    console.log("tick", time);
+  function tick() {
     if (stop) {
       return;
     }

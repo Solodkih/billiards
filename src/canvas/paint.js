@@ -1,5 +1,4 @@
 export function paintCircle(context, x, y, rad, lineWidth, color) {
-  console.log(x, y, rad);
   context.beginPath();
   context.strokeStyle = color;
   context.lineWidth = lineWidth;
