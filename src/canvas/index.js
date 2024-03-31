@@ -10,12 +10,19 @@ import {
 let canvas = null;
 let context = null;
 
+function onClickHandler(event) {
+  console.log('canvas', event);
+  console.log('22', event.clientX, event.clientY);
+}
+
 export function saveCanvas(can) {
   canvas = can;
   context = canvas.getContext('2d');
+  window.addEventListener('click', onClickHandler);
 }
 
 export function removeCanvas() {
+  canvas.removeEventListener('click', onClickHandler);
   stopAnimation();
   canvas = null;
   context = null;
