@@ -6,7 +6,7 @@ export const circle1 = {
   r: 20,
   color: 'red',
   projectionVectorX: 0,
-  projectionVectorY: 2,
+  projectionVectorY: 0,
   get weight() {
     return (DENSITY * (4 * Math.PI * this.r ** 3)) / 3;
   },
@@ -18,7 +18,7 @@ export const circle2 = {
   r: 10,
   color: 'green',
   projectionVectorX: 0,
-  projectionVectorY: -2,
+  projectionVectorY: 0,
   get weight() {
     return (DENSITY * (4 * Math.PI * this.r ** 3)) / 3;
   },
