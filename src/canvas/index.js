@@ -6,6 +6,7 @@ import {
   calculatingCollisionCircleBorder,
   getProjectionsInNewCoordinates,
 } from './calculation';
+let F = 1;
 
 let canvas = null;
 let context = null;
@@ -46,10 +47,19 @@ function onClickHandler(event) {
     Math.abs(realXYCanvas.x - circle1.x) / lenghtCircle1
   );
 
+  const sing = (X, Y) => {
+    
+    if (X < 0 && Y < 0) return { singX: 1, singY: 1 };
+    if (X > 0 && Y < 0) return { singX: 1, singY: 1 };
 
 
+    return { singX, singY };
+  };
 
+  circle1.projectionVectorX += angleBetweenPointAndX * F;
+  circle1.projectionVectorY += angleBetweenPointAndY * F;
 
+  console.log(circle1.projectionVectorX, circle1.projectionVectorY);
 }
 
 export function saveCanvas(can) {
